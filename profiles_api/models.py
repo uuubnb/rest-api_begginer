@@ -1,33 +1,30 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser
-from django.contrib.auth.models import PermissionsMixin
-from django.contrib.auth.models import BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin 
 
 
 class UserProfileManager(BaseUserManager):
-    """Manager for user profiles"""
+    """Manager for user profiles (helps Django work with our custom user model)"""
     
-    def create_user(self, email, name, password=None):
+    def create_user(self, email, name, password=None):  # same as in UserManager(BaseUserManager)
         """Create a new user profile"""
+        
         if not email:
             raise ValueError('User must have an email address')
         
-        email = self.normalize_email(email)
-        user = self.model(email=email, name=name)
+        email = self.normalize_email(email) # lowercasing the domain portion of the email address
+        user = self.model(email=email, name=name) # creating an object 
         
-        user.set_password(password)
+        user.set_password(password) # method from AbstractBaseUser class
         user.save(using=self._db)
-
         return user
 
-    def create_superuser(self, email, name, password):
+    def create_superuser(self, email, name, password): # same as in UserManager(BaseUserManager)
         """Create a new superuser with given details"""
         user = self.create_user(email, name, password)
 
         user.is_superuser = True
         user.is_staff = True
         user.save(using=self._db)
-
         return user
 
 
@@ -40,8 +37,8 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 
     objects = UserProfileManager()
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['name']
+    USERNAME_FIELD = 'email'    #  used for log-in, required field by default 
+    REQUIRED_FIELDS = ['name']  # 'email' is required also, but already set above
 
     def get_full_name(self):
         """Retrieve full name of user"""
@@ -54,3 +51,4 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         """Return string representation of our user"""
         return self.email
+

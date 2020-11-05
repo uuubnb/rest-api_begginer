@@ -136,4 +136,6 @@ dmypy.json
 eb-package.zip
 static/
 
-stepbystep.txt
+stepbystep_intro.txt
+stepbystep_main.txt
+
