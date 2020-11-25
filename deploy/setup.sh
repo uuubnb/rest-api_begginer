@@ -8,6 +8,7 @@ PROJECT_GIT_URL='https://github.com/uuubnb/rest-api_begginer.git'
 PROJECT_BASE_PATH='/usr/local/apps/profiles-rest-api'
 
 echo "Installing dependencies..."
+echo '* libraries/restart-without-asking boolean true' | sudo debconf-set-selections
 apt-get update
 apt-get install -y python3-dev python3-venv sqlite python-pip supervisor nginx git
 
